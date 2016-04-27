@@ -15,10 +15,10 @@ Node.prototype.measureDistances = function(area_range_obj, rooms_range_obj) {
         /* Just shortcut syntax */
         var neighbor = this.neighbors[i];
 
-        var delta_rooms = neighbor.rooms - this.rooms;
+        var delta_rooms = neighbor.personheight - this.personheight;
         delta_rooms = (delta_rooms ) / rooms_range;
 
-        var delta_area  = neighbor.area  - this.area;
+        var delta_area  = neighbor.personweight  - this.personweight;
         delta_area = (delta_area ) / area_range;
         //sets distance property to each neighbor of each node
         neighbor.distance = Math.sqrt( delta_rooms*delta_rooms + delta_area*delta_area );
@@ -27,7 +27,7 @@ Node.prototype.measureDistances = function(area_range_obj, rooms_range_obj) {
 //constructed nodes sort their neighbors distances relative to them in order
 Node.prototype.sortByDistance = function() {
     this.neighbors.sort(function (a, b) {
-        return a.distance - b.distance;
+        return a.distance - b.distance;male_normal
     });
 };
 //CN's can guess flat, apt, or home with this logic
@@ -99,7 +99,7 @@ NodeList.prototype.determineUnknown = function() {
             }
 
             /* Measure distances */
-            this.nodes[i].measureDistances(this.areas, this.rooms);
+            this.nodes[i].measureDistances(this.areas, this.personheight);
 
             /* Sort by distance */
             this.nodes[i].sortByDistance();
@@ -112,34 +112,34 @@ NodeList.prototype.determineUnknown = function() {
 };
 NodeList.prototype.calculateRanges = function() {
     this.areas = {min: 1000000, max: 0};
-    this.rooms = {min: 1000000, max: 0};
+    this.personheight = {min: 1000000, max: 0};
     for (var i in this.nodes)
     {
-        if (this.nodes[i].rooms < this.rooms.min)
+        if (this.nodes[i].personheight < this.personheight.min)
         {
-            this.rooms.min = this.nodes[i].rooms;
+            this.personheight.min = this.nodes[i].personheight;
         }
 
-        if (this.nodes[i].rooms > this.rooms.max)
+        if (this.nodes[i].personheight > this.personheight.max)
         {
-            this.rooms.max = this.nodes[i].rooms;
+            this.personheight.max = this.nodes[i].personheight;
         }
 
-        if (this.nodes[i].area < this.areas.min)
+        if (this.nodes[i].personweight < this.areas.min)
         {
-            this.areas.min = this.nodes[i].area;
+            this.areas.min = this.nodes[i].personweight;
         }
 
-        if (this.nodes[i].area > this.areas.max)
+        if (this.nodes[i].personweight > this.areas.max)
         {
-            this.areas.max = this.nodes[i].area;
+            this.areas.max = this.nodes[i].personweight;
         }
     }
 
 };
 //methods and shit for rendering the nodelist to html5 canvas
 NodeList.prototype.draw = function(canvas_id) {
-    var rooms_range = this.rooms.max - this.rooms.min;
+    var rooms_range = this.personheight.max - this.personheight.min;
     var areas_range = this.areas.max - this.areas.min;
 
     var canvas = document.getElementById(canvas_id);
@@ -154,14 +154,23 @@ NodeList.prototype.draw = function(canvas_id) {
 
         switch (this.nodes[i].type)
         {
-            case 'apartment':
-                ctx.fillStyle = 'red';
+            case 'male_underweight':
+                ctx.fillStyle = 'rgb(90,70,120)';
                 break;
-            case 'house':
-                ctx.fillStyle = 'green';
+            case 'female_underweight':
+                ctx.fillStyle = 'rgb(200,10,120)';
                 break;
-            case 'flat':
-                ctx.fillStyle = 'blue';
+            case 'male_normal':
+                ctx.fillStyle = 'rgb(90,160,190)';
+                break;
+            case 'female_normal':
+                ctx.strokeStyle = 'rgb(30,60,160)';
+                break;
+            case 'male_overweight':
+                ctx.strokeStyle = 'rgb(190,60,60)';
+                break;
+            case 'female_overweight':
+                ctx.strokeStyle = 'rgb(170,0,0)';
                 break;
             default:
                 ctx.fillStyle = '#666666';
@@ -171,8 +180,8 @@ NodeList.prototype.draw = function(canvas_id) {
         var x_shift_pct = (width  - padding) / width;
         var y_shift_pct = (height - padding) / height;
 
-        var x = (this.nodes[i].rooms - this.rooms.min) * (width  / rooms_range) * x_shift_pct + (padding / 2);
-        var y = (this.nodes[i].area  - this.areas.min) * (height / areas_range) * y_shift_pct + (padding / 2);
+        var x = (this.nodes[i].personheight - this.personheight.min) * (width  / rooms_range) * x_shift_pct + (padding / 2);
+        var y = (this.nodes[i].personweight  - this.areas.min) * (height / areas_range) * y_shift_pct + (padding / 2);
         y = Math.abs(y - height);
 
 
@@ -191,17 +200,26 @@ NodeList.prototype.draw = function(canvas_id) {
         {
             switch (this.nodes[i].guess.type)
             {
-                case 'apartment':
-                    ctx.strokeStyle = 'red';
+                case 'male_underweight':
+                    ctx.fillStyle = 'rgb(90,70,120)';
                     break;
-                case 'house':
-                    ctx.strokeStyle = 'green';
+                case 'female_underweight':
+                    ctx.fillStyle = 'rgb(200,10,120)';
                     break;
-                case 'flat':
-                    ctx.strokeStyle = 'blue';
+                case 'male_normal':
+                    ctx.fillStyle = 'rgb(90,160,190)';
+                    break;
+                case 'female_normal':
+                    ctx.strokeStyle = 'rgb(30,60,160)';
+                    break;
+                case 'male_overweight':
+                    ctx.strokeStyle = 'orange';
+                    break;
+                case 'female_overweight':
+                    ctx.strokeStyle = 'rgb(170,0,0)';
                     break;
                 default:
-                    ctx.strokeStyle = '#666666';
+                    ctx.fillStyle = '#666666';
             }
 
             var radius = this.nodes[i].neighbors[this.k - 1].distance * width;
@@ -224,31 +242,60 @@ NodeList.prototype.draw = function(canvas_id) {
 var nodes;
 
 var data = [
-    {rooms: 1, area: 350, type: 'apartment'},
-    {rooms: 2, area: 300, type: 'apartment'},
-    {rooms: 3, area: 300, type: 'apartment'},
-    {rooms: 4, area: 250, type: 'apartment'},
-    {rooms: 4, area: 500, type: 'apartment'},
-    {rooms: 4, area: 400, type: 'apartment'},
-    {rooms: 5, area: 450, type: 'apartment'},
+    {personheight: 66, personweight: 115, type: 'male_underweight'},
+    {personheight: 72, personweight: 145, type: 'male_underweight'},
+    {personheight: 63, personweight: 107, type: 'male_underweight'},
+    {personheight: 74, personweight: 133, type: 'male_underweight'},
+    {personheight: 74, personweight: 168, type: 'male_underweight'},
+    {personheight: 68, personweight: 128, type: 'male_underweight'},
+    {personheight: 69, personweight: 137, type: 'male_underweight'},
 
-    {rooms: 7,  area: 850,  type: 'house'},
-    {rooms: 7,  area: 900,  type: 'house'},
-    {rooms: 7,  area: 1200, type: 'house'},
-    {rooms: 8,  area: 1500, type: 'house'},
-    {rooms: 9,  area: 1300, type: 'house'},
-    {rooms: 8,  area: 1240, type: 'house'},
-    {rooms: 10, area: 1700, type: 'house'},
-    {rooms: 9,  area: 1000, type: 'house'},
+    {personheight: 57,  personweight: 67,  type: 'female_underweight'},
+    {personheight: 67,  personweight: 115,  type: 'female_underweight'},
+    {personheight: 66,  personweight: 117, type: 'female_underweight'},
+    {personheight: 62,  personweight: 99, type: 'female_underweight'},
+    {personheight: 60,  personweight: 85, type: 'female_underweight'},
+    {personheight: 69,  personweight: 127, type: 'female_underweight'},
+    {personheight: 61, personweight: 94, type: 'female_underweight'},
+    {personheight: 65,  personweight: 110, type: 'female_underweight'},
 
-    {rooms: 1, area: 800,  type: 'flat'},
-    {rooms: 3, area: 900,  type: 'flat'},
-    {rooms: 2, area: 700,  type: 'flat'},
-    {rooms: 1, area: 900,  type: 'flat'},
-    {rooms: 2, area: 1150, type: 'flat'},
-    {rooms: 1, area: 1000, type: 'flat'},
-    {rooms: 2, area: 1200, type: 'flat'},
-    {rooms: 1, area: 1300, type: 'flat'},
+    {personheight: 72, personweight: 165,  type: 'male_normal'},
+    {personheight: 71, personweight: 172,  type: 'male_normal'},
+    {personheight: 70, personweight: 156,  type: 'male_normal'},
+    {personheight: 68, personweight: 146,  type: 'male_normal'},
+    {personheight: 74, personweight: 174, type: 'male_normal'},
+    {personheight: 67, personweight: 135, type: 'male_normal'},
+    {personheight: 66, personweight: 142, type: 'male_normal'},
+    {personheight: 69, personweight: 144, type: 'male_normal'},
+
+    {personheight: 59, personweight: 95,  type: 'female_normal'},
+    {personheight: 63, personweight: 116,  type: 'female_normal'},
+    {personheight: 62, personweight: 99,  type: 'female_normal'},
+    {personheight: 61, personweight: 107,  type: 'female_normal'},
+    {personheight: 62, personweight: 116, type: 'female_normal'},
+    {personheight: 67, personweight: 128, type: 'female_normal'},
+    {personheight: 72, personweight: 153, type: 'female_normal'},
+    {personheight: 68, personweight: 132, type: 'female_normal'},
+    {personheight: 64, personweight: 108, type: 'female_normal'},
+
+
+    {personheight: 71, personweight: 200,  type: 'male_overweight'},
+    {personheight: 73, personweight: 207,  type: 'male_overweight'},
+    {personheight: 62, personweight: 135,  type: 'male_overweight'},
+    {personheight: 71, personweight: 320,  type: 'male_overweight'},
+    {personheight: 68, personweight: 184, type: 'male_overweight'},
+    {personheight: 69, personweight: 183, type: 'male_overweight'},
+    {personheight: 66, personweight: 157, type: 'male_overweight'},
+    {personheight: 70, personweight: 187, type: 'male_overweight'},
+
+    {personheight: 61, personweight: 120,  type: 'female_overweight'},
+    {personheight: 63, personweight: 130,  type: 'female_overweight'},
+    {personheight: 62, personweight: 123,  type: 'female_overweight'},
+    {personheight: 66, personweight: 145,  type: 'female_overweight'},
+    {personheight: 72, personweight: 179, type: 'female_overweight'},
+    {personheight: 59, personweight: 110, type: 'female_overweight'},
+    {personheight: 67, personweight: 152, type: 'female_overweight'},
+    {personheight: 68, personweight: 159, type: 'female_overweight'},
 ];
 var run = function() {
     var count = 0;
@@ -258,9 +305,13 @@ var run = function() {
         count = count + 1;
         nodes.add( new Node(data[i]) );
     }
-    var random_rooms = Math.round( Math.random() * 10 );
-    var random_area = Math.round( Math.random() * 2000 );
-    nodes.add( new Node({rooms: random_rooms, area: random_area, type: false}) );
+    var random_rooms = function(min, max){
+      return Math.round((Math.random() * (max - min) + min) * 100);
+   }
+    var random_area = function(min, max){
+      return Math.round((Math.random() * (max - min) + min) * 300);
+    }
+    nodes.add( new Node({personheight: random_rooms(.5,.75), personweight: random_area(.08,.5), type: false}) );
     nodes.determineUnknown();
     nodes.draw("canvas");
     console.log(count);
