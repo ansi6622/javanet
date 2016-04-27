@@ -295,7 +295,7 @@ var data = [
     {personheight: 72, personweight: 179, type: 'female_overweight'},
     {personheight: 59, personweight: 110, type: 'female_overweight'},
     {personheight: 67, personweight: 152, type: 'female_overweight'},
-    {personheight: 68, personweight: 159, type: 'female_overweight'},
+    {personheight: 68, personweight: 159, type: 'female_overweight'}
 ];
 var run = function() {
     var count = 0;
