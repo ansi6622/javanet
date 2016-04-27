@@ -99,7 +99,7 @@ NodeList.prototype.determineUnknown = function() {
             }
 
             /* Measure distances */
-            this.nodes[i].measureDistances(this.areas, this.personheight);
+            this.nodes[i].measureDistances(this.personweight, this.personheight);
 
             /* Sort by distance */
             this.nodes[i].sortByDistance();
@@ -111,7 +111,7 @@ NodeList.prototype.determineUnknown = function() {
     }
 };
 NodeList.prototype.calculateRanges = function() {
-    this.areas = {min: 1000000, max: 0};
+    this.personweight = {min: 1000000, max: 0};
     this.personheight = {min: 1000000, max: 0};
     for (var i in this.nodes)
     {
@@ -125,14 +125,14 @@ NodeList.prototype.calculateRanges = function() {
             this.personheight.max = this.nodes[i].personheight;
         }
 
-        if (this.nodes[i].personweight < this.areas.min)
+        if (this.nodes[i].personweight < this.personweight.min)
         {
-            this.areas.min = this.nodes[i].personweight;
+            this.personweight.min = this.nodes[i].personweight;
         }
 
-        if (this.nodes[i].personweight > this.areas.max)
+        if (this.nodes[i].personweight > this.personweight.max)
         {
-            this.areas.max = this.nodes[i].personweight;
+            this.personweight.max = this.nodes[i].personweight;
         }
     }
 
@@ -140,7 +140,7 @@ NodeList.prototype.calculateRanges = function() {
 //methods and shit for rendering the nodelist to html5 canvas
 NodeList.prototype.draw = function(canvas_id) {
     var rooms_range = this.personheight.max - this.personheight.min;
-    var areas_range = this.areas.max - this.areas.min;
+    var areas_range = this.personweight.max - this.personweight.min;
 
     var canvas = document.getElementById(canvas_id);
     var ctx = canvas.getContext("2d");
@@ -164,7 +164,7 @@ NodeList.prototype.draw = function(canvas_id) {
                 ctx.fillStyle = 'rgb(90,160,190)';
                 break;
             case 'female_normal':
-                ctx.strokeStyle = 'rgb(30,60,160)';
+                ctx.strokeStyle = 'green';
                 break;
             case 'male_overweight':
                 ctx.strokeStyle = 'rgb(190,60,60)';
@@ -173,7 +173,7 @@ NodeList.prototype.draw = function(canvas_id) {
                 ctx.strokeStyle = 'rgb(170,0,0)';
                 break;
             default:
-                ctx.fillStyle = '#666666';
+                ctx.fillStyle = 'blue';
         }
 
         var padding = 40;
@@ -181,7 +181,7 @@ NodeList.prototype.draw = function(canvas_id) {
         var y_shift_pct = (height - padding) / height;
 
         var x = (this.nodes[i].personheight - this.personheight.min) * (width  / rooms_range) * x_shift_pct + (padding / 2);
-        var y = (this.nodes[i].personweight  - this.areas.min) * (height / areas_range) * y_shift_pct + (padding / 2);
+        var y = (this.nodes[i].personweight  - this.personweight.min) * (height / areas_range) * y_shift_pct + (padding / 2);
         y = Math.abs(y - height);
 
 
@@ -219,7 +219,7 @@ NodeList.prototype.draw = function(canvas_id) {
                     ctx.strokeStyle = 'rgb(170,0,0)';
                     break;
                 default:
-                    ctx.fillStyle = '#666666';
+                    ctx.fillStyle = 'gold';
             }
 
             var radius = this.nodes[i].neighbors[this.k - 1].distance * width;
@@ -309,9 +309,9 @@ var run = function() {
       return Math.round((Math.random() * (max - min) + min) * 100);
    }
     var random_area = function(min, max){
-      return Math.round((Math.random() * (max - min) + min) * 300);
+      return Math.round((Math.random() * (max - min) + min) * 1000);
     }
-    nodes.add( new Node({personheight: random_rooms(.5,.75), personweight: random_area(.08,.5), type: false}) );
+    nodes.add( new Node({personheight: random_rooms(0.56,0.75), personweight: random_area(0.08,0.2), type: false}) );
     nodes.determineUnknown();
     nodes.draw("canvas");
     console.log(count);
