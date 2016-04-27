@@ -161,7 +161,7 @@ NodeList.prototype.draw = function(canvas_id) {
                 ctx.fillStyle = 'rgb(200,10,120)';
                 break;
             case 'male_normal':
-                ctx.fillStyle = 'rgb(90,160,190)';
+                ctx.fillStyle = 'green';
                 break;
             case 'female_normal':
                 ctx.strokeStyle = 'green';
@@ -207,7 +207,7 @@ NodeList.prototype.draw = function(canvas_id) {
                     ctx.fillStyle = 'rgb(200,10,120)';
                     break;
                 case 'male_normal':
-                    ctx.fillStyle = 'rgb(90,160,190)';
+                    ctx.fillStyle = 'green';
                     break;
                 case 'female_normal':
                     ctx.strokeStyle = 'rgb(30,60,160)';
