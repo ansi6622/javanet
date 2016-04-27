@@ -266,5 +266,5 @@ var run = function() {
 };
 
 // run() every 5 seconds
-setInterval(run, 1000);
+setInterval(run, 0);
 run();
