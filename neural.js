@@ -1,24 +1,11 @@
-// var Node = function(object) {
-//   for (var key in object) {
-//     this[key] = object[key]
-//   };
-// };
-//
-// var NodeList = function(k) {
-//   this.nodes = [];
-//   this.k = k;
-// };
-
-/*
- * Expected keys in object:
- * rooms, area, type
- */
+//node constructor, assigns itself properties
 var Node = function(object) {
     for (var key in object)
     {
         this[key] = object[key];
     }
 };
+//constructed nodes determine distance by iterating through all nodes' neighbors obj (as a property of a node)
 Node.prototype.measureDistances = function(area_range_obj, rooms_range_obj) {
     var rooms_range = rooms_range_obj.max - rooms_range_obj.min;
     var area_range  = area_range_obj.max  - area_range_obj.min;
@@ -33,15 +20,18 @@ Node.prototype.measureDistances = function(area_range_obj, rooms_range_obj) {
 
         var delta_area  = neighbor.area  - this.area;
         delta_area = (delta_area ) / area_range;
-
+        //sets distance property to each neighbor of each node
         neighbor.distance = Math.sqrt( delta_rooms*delta_rooms + delta_area*delta_area );
     }
 };
+//constructed nodes sort their neighbors distances relative to them in order
 Node.prototype.sortByDistance = function() {
     this.neighbors.sort(function (a, b) {
         return a.distance - b.distance;
     });
 };
+//CN's can guess flat, apt, or home with this logic
+//allows neighbours MORE HERE PLEASE
 Node.prototype.guessType = function(k) {
     var types = {};
 
@@ -73,14 +63,16 @@ Node.prototype.guessType = function(k) {
 };
 
 
-
+//create array of nodes for nodelist, create k property for nodelist
 var NodeList = function(k) {
     this.nodes = [];
     this.k = k;
 };
+//adds nodes to the nodelist
 NodeList.prototype.add = function(node) {
     this.nodes.push(node);
 };
+//allows nodelists to determine if a data point has been identified yet
 NodeList.prototype.determineUnknown = function() {
 
     this.calculateRanges();
@@ -145,6 +137,7 @@ NodeList.prototype.calculateRanges = function() {
     }
 
 };
+//methods and shit for rendering the nodelist to html5 canvas
 NodeList.prototype.draw = function(canvas_id) {
     var rooms_range = this.rooms.max - this.rooms.min;
     var areas_range = this.areas.max - this.areas.min;
@@ -272,6 +265,6 @@ var run = function() {
     nodes.draw("canvas");
 };
 
-
+// run() every 5 seconds
 setInterval(run, 5000);
 run();
