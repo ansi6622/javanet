@@ -304,7 +304,15 @@ var data = [
     {personheight: 105, personweight: 215, type: 'the_weirdness'},
     {personheight: 90, personweight: 200, type: 'the_weirdness'},
     {personheight: 110, personweight: 210, type: 'the_weirdness'},
-    {personheight: 110, personweight: 190, type: 'the_weirdness'}
+    {personheight: 110, personweight: 190, type: 'the_weirdness'},
+    {personheight: 100, personweight: 99,  type: 'the_weirdness'},
+    {personheight: 95, personweight: 98,  type: 'the_weirdness'},
+    {personheight: 95, personweight: 107,  type: 'the_weirdness'},
+    {personheight: 105, personweight: 100,  type: 'the_weirdness'},
+    {personheight: 105, personweight: 213, type: 'the_weirdness'},
+    {personheight: 90, personweight: 202, type: 'the_weirdness'},
+    {personheight: 110, personweight: 99, type: 'the_weirdness'},
+    {personheight: 110, personweight: 98, type: 'the_weirdness'}
 ];
 var run = function() {
     var count = 0;
