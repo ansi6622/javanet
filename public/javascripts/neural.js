@@ -312,7 +312,24 @@ var data = [
     {personheight: 105, personweight: 213, type: 'the_weirdness'},
     {personheight: 90, personweight: 202, type: 'the_weirdness'},
     {personheight: 110, personweight: 99, type: 'the_weirdness'},
-    {personheight: 110, personweight: 98, type: 'the_weirdness'}
+    {personheight: 110, personweight: 98, type: 'the_weirdness'},
+
+    {personheight: 120, personweight: 200,  type: 'addinallstuff'},
+    {personheight: 152, personweight: 234,  type: 'addinallstuff'},
+    {personheight: 132, personweight: 190,  type: 'addinallstuff'},
+    {personheight: 135, personweight: 185,  type: 'addinallstuff'},
+    {personheight: 125, personweight: 323, type: 'addinallstuff'},
+    {personheight: 110, personweight: 123, type: 'addinallstuff'},
+    {personheight: 10, personweight: 132, type: 'addinallstuff'},
+    {personheight: 115, personweight: 129, type: 'addinallstuff'},
+    {personheight: 107, personweight: 123,  type: 'addinallstuff'},
+    {personheight: 109, personweight: 123,  type: 'addinallstuff'},
+    {personheight: 143, personweight: 117,  type: 'addinallstuff'},
+    {personheight: 105, personweight: 111,  type: 'addinallstuff'},
+    {personheight: 365, personweight: 212, type: 'addinallstuff'},
+    {personheight: 90, personweight: 202, type: 'addinallstuff'},
+    {personheight: 110, personweight: 99, type: 'addinallstuff'},
+    {personheight: 110, personweight: 98, type: 'addinallstuff'}
 ];
 var run = function() {
     var count = 0;
