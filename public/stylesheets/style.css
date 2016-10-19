@@ -6,7 +6,9 @@ body {
 a {
   color: #00B7FF;
 }
-
+img {
+  border-radius: 50%;
+}
 #canvas {
     width:400px;
     height:400px;
