@@ -1,4 +1,4 @@
-//node constructor, assigns itself properties
+;//node constructor, assigns itself properties
 var Node = function(object) {
     for (var key in object)
     {
@@ -173,7 +173,7 @@ NodeList.prototype.draw = function(canvas_id) {
                 ctx.strokeStyle = 'rgb(170,0,0)';
                 break;
             default:
-                ctx.fillStyle = 'blue';
+                ctx.fillStyle = 'grey';
         }
 
         var padding = 40;
@@ -217,6 +217,12 @@ NodeList.prototype.draw = function(canvas_id) {
                     break;
                 case 'female_overweight':
                     ctx.strokeStyle = 'rgb(170,0,0)';
+                    break;
+                case 'addinallstuff':
+                    ctx.strokeStyle = 'rgb(170,170,0)';
+                    break;
+                case 'the_weirdness':
+                    ctx.strokeStyle = 'rgb(0,170,0)';
                     break;
                 default:
                     ctx.fillStyle = 'gold';
@@ -274,7 +280,6 @@ var data = [
     {personheight: 61, personweight: 107,  type: 'female_normal'},
     {personheight: 62, personweight: 116, type: 'female_normal'},
     {personheight: 67, personweight: 128, type: 'female_normal'},
-    {personheight: 72, personweight: 153, type: 'female_normal'},
     {personheight: 68, personweight: 132, type: 'female_normal'},
     {personheight: 64, personweight: 108, type: 'female_normal'},
 
@@ -282,7 +287,6 @@ var data = [
     {personheight: 71, personweight: 200,  type: 'male_overweight'},
     {personheight: 73, personweight: 207,  type: 'male_overweight'},
     {personheight: 62, personweight: 135,  type: 'male_overweight'},
-    {personheight: 71, personweight: 320,  type: 'male_overweight'},
     {personheight: 68, personweight: 184, type: 'male_overweight'},
     {personheight: 69, personweight: 183, type: 'male_overweight'},
     {personheight: 66, personweight: 157, type: 'male_overweight'},
@@ -318,7 +322,6 @@ var data = [
     {personheight: 152, personweight: 234,  type: 'addinallstuff'},
     {personheight: 132, personweight: 190,  type: 'addinallstuff'},
     {personheight: 135, personweight: 185,  type: 'addinallstuff'},
-    {personheight: 125, personweight: 323, type: 'addinallstuff'},
     {personheight: 110, personweight: 123, type: 'addinallstuff'},
     {personheight: 10, personweight: 132, type: 'addinallstuff'},
     {personheight: 115, personweight: 129, type: 'addinallstuff'},
@@ -326,7 +329,6 @@ var data = [
     {personheight: 109, personweight: 123,  type: 'addinallstuff'},
     {personheight: 143, personweight: 117,  type: 'addinallstuff'},
     {personheight: 105, personweight: 111,  type: 'addinallstuff'},
-    {personheight: 365, personweight: 212, type: 'addinallstuff'},
     {personheight: 90, personweight: 202, type: 'addinallstuff'},
     {personheight: 110, personweight: 99, type: 'addinallstuff'},
     {personheight: 110, personweight: 98, type: 'addinallstuff'}
